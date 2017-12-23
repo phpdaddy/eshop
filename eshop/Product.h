@@ -8,4 +8,6 @@ public:
 	std::string name;
 	float price;
 	float discount;
+
+	virtual ~Product() {}
 };

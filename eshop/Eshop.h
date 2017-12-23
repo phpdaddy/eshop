@@ -13,6 +13,9 @@ private:
 	Eshop() { }
 public:
 	static Eshop *getInstance();
-	vector<Product*> getProducts();
+	vector<Product*> *getProducts();
 	void addProduct(Product* product);
+	Product * findProductByNum(int no);
+	void updateProduct(int no, Product* product);
+	void removeProduct(int no);
 };

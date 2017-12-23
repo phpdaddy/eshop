@@ -11,4 +11,7 @@ using namespace std;
 class CommonMenu {
 public:
 	static void priceList();
+	static void displayProduct(Product * prod);
+	static void displayProduct(int num);
+	static void productHeader();
 };

@@ -53,7 +53,7 @@ ConfigurableProduct* AdminMenu::createConfigurableProduct()
 
 	cout << "\n\t" << "Width: ";
 	cin >> product->width;
-	 
+
 	if (cin.fail())
 	{
 		IOUtils::cleanCin();
@@ -114,33 +114,8 @@ void AdminMenu::createProductMenu()
 	cout << "\n\n\t" << "The product has been created!";
 	_getch();
 }
-void AdminMenu::displayAll()
-{
-	system("cls");
-	cout << "\n\n\n\t" << "All products: " << "\n\n";
-	vector<Product*> products = Eshop::getInstance()->getProducts();
 
-	vector<Product*>::iterator itrProducts = products.begin();
-	while (itrProducts != products.end()) {
-		cout << "\t" << (*itrProducts)->productNumber << "\t\t" << (*itrProducts)->name << "\t\t" << (*itrProducts)->price << endl;
-		cout << "\n\t" << "====================================" << "\n";
-		++itrProducts;
-	}
-	_getch();
-}
-void AdminMenu::displayProduct(int num) {
-	vector<Product*> products = Eshop::getInstance()->getProducts();
 
-	vector<Product*>::iterator itrProducts = products.begin();
-	while (itrProducts != products.end()) {
-		if ((*itrProducts)->productNumber == num) {
-			cout << "\t" << (*itrProducts)->productNumber << "\t\t" << (*itrProducts)->name << "\t\t" << (*itrProducts)->price << endl;
-			return;
-		}
-		++itrProducts;
-	}
-	throw exception("Product does not exist!");
-}
 void AdminMenu::displayProductMenu()
 {
 	int num;
@@ -153,7 +128,8 @@ void AdminMenu::displayProductMenu()
 			IOUtils::cleanCin();
 			throw exception("Incorrect product number");
 		}
-		displayProduct(num);
+		CommonMenu::productHeader();
+		CommonMenu::displayProduct(num);
 	}
 	catch (exception& e) {
 		cout << "\n\t" << e.what();
@@ -180,54 +156,35 @@ void AdminMenu::deleteProduct()
 {
 	int no;
 	cin >> no;
-	vector<Product*> products = Eshop::getInstance()->getProducts();
-
-	vector<Product*>::iterator itrProducts = products.begin();
-	int removeIndex = -1;
-	while (itrProducts != products.end()) {
-		if ((*itrProducts)->productNumber == no) {
-			int offset = (itrProducts - products.begin());
-			products.erase(products.begin() + offset);
-
-			cout << "\n\n\t" << "Product deleted ..";
-			_getch();
-		}
-		++itrProducts;
-	}
-	throw exception("Product does not exist!");
+	Eshop::getInstance()->removeProduct(no);
+	cout << "\n\t" << "Product deleted!";
+	_getch();
 }
 
 void AdminMenu::modifyProduct()
 {
 	int no;
 	cin >> no;
-	vector<Product*> products = Eshop::getInstance()->getProducts();
-
-	vector<Product*>::iterator itrProducts = products.begin();
 
 	char ch = 'Y';
 	cout << "\n\t" << "You want to create a configurable product ? (y/n)";
 	cin >> ch;
+	cout << "\n\t" << "Please Enter the new details of product: " << endl;
 
-	while (itrProducts != products.end()) {
-		if ((*itrProducts)->productNumber == no) {
-			displayProduct(no);
-			cout << "\n\t" << "Please Enter the new details of product: " << endl;
-			Product * product = nullptr;
-			if (ch == 'y' || ch == 'Y') {
-				product = createConfigurableProduct();
-			}
-			else {
-				product = createProduct();
-			}
-			*(*itrProducts) = *product;
-			cout << "\n\n\t" << " Product updated";
-			_getch();
-			return;
-		}
-		++itrProducts;
+	CommonMenu::productHeader();
+	CommonMenu::displayProduct(no);
+
+	Product * product = nullptr;
+	if (ch == 'y' || ch == 'Y') {
+		product = createConfigurableProduct();
 	}
-	throw exception("Product does not exist!");
+	else {
+		product = createProduct();
+	}
+	Eshop::getInstance()->updateProduct(no, product);
+	cout << "\n\t" << "Product updated!";
+	_getch();
+	
 }
 void AdminMenu::modifyProductMenu()
 {
@@ -253,8 +210,7 @@ void AdminMenu::menu()
 	cout << "\n\n\t" << "3.QUERY ";
 	cout << "\n\n\t" << "4.MODIFY PRODUCT";
 	cout << "\n\n\t" << "5.DELETE PRODUCT";
-	cout << "\n\n\t" << "6.VIEW PRODUCT MENU";
-	cout << "\n\n\t" << "7.BACK TO MAIN MENU";
+	cout << "\n\n\t" << "6.BACK TO MAIN MENU";
 	cout << "\n\n\t" << "Please Enter Your Choice (1-7) ";
 	ch2 = _getche();
 	switch (ch2)
@@ -264,7 +220,8 @@ void AdminMenu::menu()
 		createProductMenu();
 		break;
 	case '2':
-		displayAll();
+		CommonMenu::priceList();
+		_getch();
 		break;
 	case '3':
 		displayProductMenu();
@@ -276,9 +233,6 @@ void AdminMenu::menu()
 		deleteProductMenu();
 		break;
 	case '6':
-		CommonMenu::priceList();
-		_getch();
-	case '7':
 		break;
 	default:cout << "\a";
 		menu();

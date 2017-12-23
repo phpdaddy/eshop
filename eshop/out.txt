@@ -1,9 +1,0 @@
-
-
-	********************************INVOICE*****************************
-
-	P.no.	Name	Quantity 	Price 	Amount 	Amount after discount
-
-	123	awd	2		2	4		3.92
-
-	TOTAL = 3.92

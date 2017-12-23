@@ -14,9 +14,7 @@ class AdminMenu {
 private:
 	static Product * createProduct();
 	static ConfigurableProduct * createConfigurableProduct();
-	static void displayProduct(int num);
 	static void createProductMenu();
-	static void displayAll();
 	static void displayProductMenu();
 	static void deleteProductMenu();
 	static void deleteProduct();
