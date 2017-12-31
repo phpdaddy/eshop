@@ -8,7 +8,7 @@ void CommonMenu::productHeader() {
 
 void CommonMenu::priceList()
 {
-	system("cls");
+	ConsoleUtils::clearConsole();
 	cout << "\n\n\t" << "Product menu" << "\n\n";
 	productHeader();
 
@@ -18,7 +18,7 @@ void CommonMenu::priceList()
 		displayProduct(*itrProducts);
 		++itrProducts;
 	}
-
+	cout << "\t";
 }
 void CommonMenu::displayProduct(Product * prod) {
 	if (ConfigurableProduct* conf = dynamic_cast<ConfigurableProduct*>(prod))

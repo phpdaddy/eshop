@@ -4,31 +4,31 @@ Product* AdminMenu::createProduct()
 {
 	Product * product = new Product;
 	cout << "\n\t" << "Please enter the product no. of the product: ";
-	cin >> product->productNumber;
-	if (cin.fail())
-	{
-		IOUtils::cleanCin();
+	try {
+		product->productNumber = IOUtils::readInt();
+	}
+	catch (exception) {
 		throw exception("Incorrect product number!");
 	}
 	cout << "\n\t" << "Please enter the name of the product: ";
-	cin >> product->name;
-	if (cin.fail())
-	{
-		IOUtils::cleanCin();
+	try {
+		product->name = IOUtils::readString();
+	}
+	catch (exception) {
 		throw exception("Incorrect name!");
 	}
 	cout << "\n\t" << "Please enter the price of the product: ";
-	cin >> product->price;
-	if (cin.fail())
-	{
-		IOUtils::cleanCin();
+	try {
+		product->price = IOUtils::readInt();
+	}
+	catch (exception) {
 		throw exception("Incorrect price!");
 	}
 	cout << "\n\t" << "Please enter the discount (%): ";
-	cin >> product->discount;
-	if (cin.fail())
-	{
-		IOUtils::cleanCin();
+	try {
+		product->discount = IOUtils::readInt();
+	}
+	catch (exception) {
 		throw exception("Incorrect discount!");
 	}
 	return product;
@@ -36,6 +36,8 @@ Product* AdminMenu::createProduct()
 
 ConfigurableProduct* AdminMenu::createConfigurableProduct()
 {
+	string input;
+
 	ConfigurableProduct * product = new ConfigurableProduct;
 	Product * baseProduct = createProduct();
 	product->productNumber = baseProduct->productNumber;
@@ -43,49 +45,38 @@ ConfigurableProduct* AdminMenu::createConfigurableProduct()
 	product->price = baseProduct->price;
 	product->discount = baseProduct->discount;
 
-	char ch = 'Y';
 	cout << "\n\t" << "The product is solid? (y/n): ";
-	cin >> ch;
-	product->solid = false;
-	if (ch == 'y' || ch == 'Y') {
-		product->solid = true;
-	}
+	product->solid = IOUtils::readCondition();
 
 	cout << "\n\t" << "Width: ";
-	cin >> product->width;
-
-	if (cin.fail())
-	{
-		IOUtils::cleanCin();
+	try {
+		product->width = IOUtils::readInt();
+	}
+	catch (exception) {
 		throw exception("Incorrect width!");
 	}
 
-
 	cout << "\n\t" << "Height: ";
-	cin >> product->height;
-
-	if (cin.fail())
-	{
-		IOUtils::cleanCin();
+	try {
+		product->height = IOUtils::readInt();
+	}
+	catch (exception) {
 		throw exception("Incorrect height!");
 	}
 
 	cout << "\n\t" << "Depth: ";
-	cin >> product->depth;
-
-	if (cin.fail())
-	{
-		IOUtils::cleanCin();
+	try {
+		product->depth = IOUtils::readInt();
+	}
+	catch (exception) {
 		throw exception("Incorrect depth!");
 	}
 
-
 	cout << "\n\t" << "Mass: ";
-	cin >> product->mass;
-
-	if (cin.fail())
-	{
-		IOUtils::cleanCin();
+	try {
+		product->mass = IOUtils::readInt();
+	}
+	catch (exception) {
 		throw exception("Incorrect mass!");
 	}
 	return product;
@@ -95,10 +86,9 @@ void AdminMenu::createProductMenu()
 {
 	Product * product;
 	try {
-		char ch = 'Y';
 		cout << "\n\n\n\t" << "You want to create a configurable product ? (y/n): ";
-		cin >> ch;
-		if (ch == 'y' || ch == 'Y') {
+
+		if (IOUtils::readCondition()) {
 			product = createConfigurableProduct();
 		}
 		else {
@@ -119,16 +109,16 @@ void AdminMenu::createProductMenu()
 void AdminMenu::displayProductMenu()
 {
 	int num;
-	system("cls");
+	ConsoleUtils::clearConsole();
 	cout << "\n\n\n\t" << "Product No. : ";
-	cin >> num;
 	try {
-		if (cin.fail())
-		{
-			IOUtils::cleanCin();
-			throw exception("Incorrect product number");
-		}
-		CommonMenu::productHeader();
+		num = IOUtils::readInt();
+	}
+	catch (exception) {
+		throw exception("Incorrect product number!");
+	}
+	CommonMenu::productHeader();
+	try {
 		CommonMenu::displayProduct(num);
 	}
 	catch (exception& e) {
@@ -140,7 +130,7 @@ void AdminMenu::displayProductMenu()
 }
 void AdminMenu::deleteProductMenu()
 {
-	system("cls");
+	ConsoleUtils::clearConsole();
 	cout << "\n\n\n\t" << "Delete product";
 	cout << "\n\n\t" << "Please enter the product no.: ";
 	try {
@@ -154,41 +144,51 @@ void AdminMenu::deleteProductMenu()
 }
 void AdminMenu::deleteProduct()
 {
-	int no;
-	cin >> no;
-	Eshop::getInstance()->removeProduct(no);
+	int num;
+	try {
+		num = IOUtils::readInt();
+	}
+	catch (exception) {
+		throw exception("Incorrect product number!");
+	}
+	Eshop::getInstance()->removeProduct(num);
 	cout << "\n\t" << "Product deleted!";
 	_getch();
 }
 
 void AdminMenu::modifyProduct()
 {
-	int no;
-	cin >> no;
+	int num;
+	try {
+		num = IOUtils::readInt();
+	}
+	catch (exception) {
+		throw exception("Incorrect product number!");
+	}
 
-	char ch = 'Y';
 	cout << "\n\t" << "You want to create a configurable product ? (y/n)";
-	cin >> ch;
+
+	bool conf = IOUtils::readCondition();
 	cout << "\n\t" << "Please Enter the new details of product: " << endl;
 
 	CommonMenu::productHeader();
-	CommonMenu::displayProduct(no);
+	CommonMenu::displayProduct(num);
 
 	Product * product = nullptr;
-	if (ch == 'y' || ch == 'Y') {
+	if (conf) {
 		product = createConfigurableProduct();
 	}
 	else {
 		product = createProduct();
 	}
-	Eshop::getInstance()->updateProduct(no, product);
+	Eshop::getInstance()->updateProduct(num, product);
 	cout << "\n\t" << "Product updated!";
 	_getch();
-	
+
 }
 void AdminMenu::modifyProductMenu()
 {
-	system("cls");
+	ConsoleUtils::clearConsole();
 	cout << "\n\n\n\t" << "To nodify ";
 	cout << "\n\n\t" << "Please enter the product nunmber: ";
 	try {
@@ -202,7 +202,7 @@ void AdminMenu::modifyProductMenu()
 }
 void AdminMenu::menu()
 {
-	system("cls");
+	ConsoleUtils::clearConsole();
 	char ch2;
 	cout << "\n\n\n\t" << "ADMIN MENU";
 	cout << "\n\n\t" << "1.CREATE PRODUCT";
@@ -216,7 +216,7 @@ void AdminMenu::menu()
 	switch (ch2)
 	{
 	case '1':
-		system("cls");
+		ConsoleUtils::clearConsole();
 		createProductMenu();
 		break;
 	case '2':

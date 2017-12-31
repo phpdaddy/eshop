@@ -1,9 +1,2 @@
-﻿  Eshop.cpp
-  CustomerMenu.cpp
-  CommonMenu.cpp
-  AdminMenu.cpp
-  Generating Code...
-  Skipping... (no relevant changes detected)
-  main.cpp
-  MainMenu.cpp
+﻿  IOUtils.cpp
   eshop.vcxproj -> C:\Users\frolov00\source\repos\eshop\Debug\eshop.exe

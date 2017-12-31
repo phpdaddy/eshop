@@ -7,6 +7,7 @@ using namespace std;
 
 #include "Eshop.h"
 #include "ConfigurableProduct.h"
+#include "ConsoleUtils.h"
 
 class CommonMenu {
 public:

@@ -30,9 +30,8 @@ void CustomerMenu::menu()
 {
 	int c = 0;
 	vector<Order*> orders;
-	char ch = 'Y';
 	do {
-		system("cls");
+		ConsoleUtils::clearConsole();
 		CommonMenu::priceList();
 		cout << "\n\t" << "============================";
 		cout << "\n\t" << "Place your order";
@@ -40,10 +39,10 @@ void CustomerMenu::menu()
 		Order *order = new Order;
 		cout << "\n\t" << "Enter the product number: ";
 		try {
-			cin >> order->productNumber;
-			if (cin.fail())
-			{
-				IOUtils::cleanCin();
+			try {
+				order->productNumber = IOUtils::readInt();
+			}
+			catch (exception) {
 				throw exception("Incorrect product number!");
 			}
 			vector<Product*>* products = Eshop::getInstance()->getProducts();
@@ -51,10 +50,11 @@ void CustomerMenu::menu()
 			vector<Product*>::iterator itrProducts = products->begin();
 			Product * p = Eshop::getInstance()->findProductByNum(order->productNumber);
 			cout << "\n\t" << "Quantity: ";
-			cin >> order->quantity;
-			if (cin.fail())
-			{
-				IOUtils::cleanCin();
+			try {
+				order->quantity = IOUtils::readInt();
+			}
+			catch (exception) {
+
 				throw exception("Incorrect quantity!");
 			}
 		}
@@ -65,12 +65,11 @@ void CustomerMenu::menu()
 		}
 		orders.push_back(order);
 		cout << "\n\t" << "Do you want to order another product ? (y/n)";
-		cin >> ch;
-	} while (ch == 'y' || ch == 'Y');
+	} while (IOUtils::readCondition());
 	cout << "\n\t" << "Thank you for placing the order";
 	_getch();
-	system("cls");
 
+	ConsoleUtils::clearConsole();
 
 	ofstream *out = new ofstream("out.txt");
 	std::streambuf *coutbuf = std::cout.rdbuf(); //save old buf

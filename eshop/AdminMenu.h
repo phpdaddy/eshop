@@ -9,6 +9,7 @@ using namespace std;
 #include "IOUtils.h"
 #include "CommonMenu.h"
 #include "ConfigurableProduct.h"
+#include "ConsoleUtils.h"
 
 class AdminMenu {
 private:

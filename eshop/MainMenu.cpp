@@ -2,7 +2,7 @@
 
 void MainMenu::intro()
 {
-	system("cls");
+	ConsoleUtils::clearConsole();
 	ConsoleUtils::gotoxy(34, 5);
 	cout << "SUPER MARKET";
 	ConsoleUtils::gotoxy(34, 7);
@@ -20,7 +20,7 @@ void MainMenu::menu() {
 	char ch;
 	do
 	{
-		system("cls");
+		ConsoleUtils::clearConsole();
 		cout << "\n\n\n\tMAIN MENU";
 		cout << "\n\n\t01. CUSTOMER";
 		cout << "\n\n\t02. ADMINISTRATOR";
@@ -31,13 +31,14 @@ void MainMenu::menu() {
 		{
 		case '1':
 			CustomerMenu::menu();
-			_getch();
 			break;
 		case '2':
 			AdminMenu::menu();
 			break;
-		case '3':exit(0);
-		default:cout << "\a";
+		case '3':
+			exit(0);
+		default:
+			cout << "\a";
 		}
 	} while (ch != '3');
 }
